@@ -4,21 +4,34 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.TimedRobot;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkLimitSwitch;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 
-/**
- * The VM is configured to automatically run this class, and to call the functions corresponding to
- * each mode, as described in the TimedRobot documentation. If you change the name of this class or
- * the package after creating this project, you must also update the build.gradle file in the
- * project.
- */
+import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
+
 public class Robot extends TimedRobot {
-  /**
-   * This function is run when the robot is first started up and should be used for any
-   * initialization code.
-   */
+  
+  private CANSparkMax armMotor; // Create a variable "armMotor" for the arm motor
+  private SparkLimitSwitch fwdLimitSwitch; // Create a variable "fwdLimitSwitch" for the forward limit switch
+  private SparkLimitSwitch revLimitSwitch; // Create a variable "revLimitSwitch" for the rev limit switch
+
+  private XboxController controller; // Create a variable "controller" for the Xbox controller
+
   @Override
-  public void robotInit() {}
+  public void robotInit() {
+
+    armMotor = new CANSparkMax(0, MotorType.kBrushless); // Store an instance of CANSparkMax in the armMotor variable
+    armMotor.restoreFactoryDefaults(); // Restore motor to factory defaults to avoid runaway robots
+    fwdLimitSwitch = armMotor.getForwardLimitSwitch(SparkLimitSwitch.Type.kNormallyOpen); // Get the fwd limit switch from the motor and store it
+    revLimitSwitch = armMotor.getReverseLimitSwitch(SparkLimitSwitch.Type.kNormallyClosed); // Same for the reverse limit switch
+
+    // Enable the limit switches
+    fwdLimitSwitch.enableLimitSwitch(true);
+    revLimitSwitch.enableLimitSwitch(false);
+
+  }
 
   @Override
   public void robotPeriodic() {}
@@ -33,7 +46,13 @@ public class Robot extends TimedRobot {
   public void teleopInit() {}
 
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+
+    double joystick = controller.getLeftY(); // Create local variable "joystick" which gets the value of the controller's left joystick Y axis (-1.0 to +1.0)
+    joystick *= 0.2; // Scale joystick value to 20%
+    armMotor.set(joystick); // Set motor speed to the joystick value
+
+  }
 
   @Override
   public void disabledInit() {}
