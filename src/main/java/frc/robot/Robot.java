@@ -11,6 +11,8 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 
+// This code was modified by: *************
+
 public class Robot extends TimedRobot {
   
   private CANSparkMax armMotor; // Create a variable "armMotor" for the arm motor
