@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 
 // This code was modified by: Nick Dupre
+//Adding Mr. Scott
 
 public class Robot extends TimedRobot {
   
